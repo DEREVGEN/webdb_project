@@ -13,13 +13,16 @@
             $.ajax({
                 url: "/getLocation",
                 type: "post",
+                headers: {'Content-Type': 'application/json'},
                 data: JSON.stringify(inputData),
                 dataType: "json",
                 success: function(result) {
                     console.log(result)
+                    $("#good").text("좋습니다!!")
                 },
                 error: function(result, status, error) {
                     console.log(result)
+                    $("#good").text("안좋습니다..")
                 }
             })
         }
@@ -39,6 +42,8 @@
 </head>
 
 <body>
+
+
 </body>
 
 </html>

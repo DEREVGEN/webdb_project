@@ -19,15 +19,13 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 class lottoServiceTest {
 
     @Autowired
-    lottoService lottoService;
+    lottoParsingService lottoService;
     @Autowired
     lottoRepository lottoRepo;
 

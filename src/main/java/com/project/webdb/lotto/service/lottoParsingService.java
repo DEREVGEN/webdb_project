@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.*;
 
 @Service
-public class lottoService {
+public class lottoParsingService {
 
     /* lotto엔티티 추가
         1. 로또 사이트 파싱
@@ -116,8 +116,8 @@ public class lottoService {
         String x = gps.get("x").toString();
         String y = gps.get("y").toString();
 
-        gpsData.put("lat", Double.parseDouble(x));
-        gpsData.put("lon", Double.parseDouble(y));
+        gpsData.put("lon", Double.parseDouble(x));
+        gpsData.put("lat", Double.parseDouble(y));
 
         return gpsData;
     }

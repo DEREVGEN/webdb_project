@@ -1,15 +1,13 @@
 package com.project.webdb.lotto.domain;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @ToString
+@NoArgsConstructor
 public class lottoEntity {
 
     @Id
