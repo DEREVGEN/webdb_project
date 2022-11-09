@@ -1,49 +1,66 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lagn="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <title>Geolocation example - watchPosition()</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript">
-        function success({ coords, timestamp }) {
-
-            var inputData = {"lat": coords.latitude, "lon": coords.longitude}
-
-            $.ajax({
-                url: "/getLocation",
-                type: "post",
-                headers: {'Content-Type': 'application/json'},
-                data: JSON.stringify(inputData),
-                dataType: "json",
-                success: function(result) {
-                    console.log(result)
-                    $("#good").text("좋습니다!!")
-                },
-                error: function(result, status, error) {
-                    console.log(result)
-                    $("#good").text("안좋습니다..")
-                }
+        $(function() {
+            $("#locationBtn").click(function(event) {
+                console.log(`버튼 눌려졌고~ lat값: ${lat} lon값: ${lon}`)
+                var inputData = {"lat": lat, "lon": lon}
+                $.ajax({
+                    url: "/getLocation",
+                    type: "post",
+                    headers: {'Content-Type': 'application/json'},
+                    data: JSON.stringify(inputData),
+                    success: function(result) {
+                        $('#thymeTable').replaceWith(result)
+                    },
+                    error: function(result, status, error) {
+                        console.log('result'+result)
+                        console.log('error'+error)
+                        console.log('status'+status)
+                    }
+                })
             })
+        })
+        var lat = 0, lon = 0
+
+        function success({ coords, timestamp }) {
+            lat = coords.latitude
+            lon = coords.longitude
         }
         function error(error) {
             alert(`에러코드: ${error.code}, 메시지: ${error.message} `)
         }
-
         function getUserLocation() {
             if (!navigator.geolocation) {
                 throw "위치 정보가 지원되지 않습니다.";
             }
             navigator.geolocation.getCurrentPosition(success, error)
         }
-
         getUserLocation();
     </script>
 </head>
 
 <body>
 
+<button id="locationBtn">조회하기</button>
 
-</body>
-
+<table id="thymeTable" border="1">
+    <thead>
+    <th>이름</th>
+    <th>방식</th>
+    <th>주소</th>
+    </thead>
+    <tbody>
+    <tr th:each="data : ${lottoData}">
+        <td th:text="${data.nickname}"></td>
+        <td th:text="${data.auto}"></td>
+        <td th:text="${data.location}"></td>
+    </tr>
+    </tbody>
+</table>
 </html>
