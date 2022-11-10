@@ -16,13 +16,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class lottoServiceTest {
+class lottoDataEntityParsingServiceTest {
 
     @Autowired
     lottoParsingService lottoService;
@@ -73,15 +74,31 @@ class lottoServiceTest {
     }
 
     @Test
-    @DisplayName("레포지터리 테스트")
-    void repo_test() {
-        lottoRepo.save(lottoEntity.builder()
-                .nickname("야후")
-                .auto(true)
-                .round(1400)
-                .lat(25.5)
-                .lon(26.0)
-                .location("야후")
-                .build());
+    @DisplayName("로또 당첨번호 파싱 테스트")
+    void lotto_win_number_parsing_test() throws IOException {
+        String URL = "https://dhlottery.co.kr/gameResult.do?method=byWin";
+        Connection conn = Jsoup.connect(URL);
+
+        Document document = conn.get();
+
+        //회차파싱
+        Element roundValue = document.select(".win_result h4 strong").get(0);
+        int round = Integer.parseInt(roundValue.text().substring(0, roundValue.text().lastIndexOf("회")));
+
+        //당첨번호 파싱
+        List<Integer> winNumList = new ArrayList<>();
+        Elements winNumbers = document.select(".win p span");
+        for (Element number : winNumbers) {
+            winNumList.add(Integer.parseInt(number.text()));
+        }
+        Element bonusNum = document.select(".bonus p").get(0);
+        int bonus = Integer.parseInt(bonusNum.text());
+
+        System.out.println(round + "회차 입니다.");
+        System.out.println("당첨번호: ");
+        for (int num : winNumList) {
+            System.out.print(num + ", ");
+        }
+        System.out.println("보너스 번호: " + bonus);
     }
 }

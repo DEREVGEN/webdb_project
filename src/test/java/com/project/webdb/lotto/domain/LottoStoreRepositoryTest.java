@@ -1,0 +1,41 @@
+package com.project.webdb.lotto.domain;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
+class LottoStoreRepositoryTest {
+
+    @Autowired
+    LottoStoreRepository storeRepository;
+
+
+    @Test
+    @DisplayName("LottoData-LottoStoreEntity 1대1 단방향 매핑 테스트")
+    void repo_test() {
+        LottoDataEntity lottoData = LottoDataEntity.builder()
+                .id(1004)
+                .num1(1)
+                .num2(2)
+                .num3(4)
+                .num4(5)
+                .num5(6)
+                .num6(7)
+                .bonus(111)
+                .build();
+
+        storeRepository.save(LottoStoreEntity.builder()
+                .nickname("wow")
+                .location("good")
+                .auto(false)
+                .lottoDataEntity(lottoData)
+                .build());
+    }
+}

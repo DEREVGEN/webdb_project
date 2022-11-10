@@ -1,13 +1,11 @@
-package com.project.webdb.lotto.domain;
+package com.project.webdb.lotto.service;
 
+import com.project.webdb.lotto.domain.lottoEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.extension.Extension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import javax.persistence.Entity;
 
 import java.util.List;
 
@@ -15,15 +13,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class lottoRepositoryTest {
+class lottoDataEntityFindingServiceTest {
 
     @Autowired
-    lottoRepository repo;
+    lottoFindingService service;
 
     @Test
-    void repo_test() {
-        List<lottoEntity> entityList = repo.findByNickname("소리창고");
+    void service_test() {
+        List<lottoEntity> entityList = service.find(37.4532, 127.1365);
 
-        System.out.println(entityList.get(0).toString());
+        for(lottoEntity entity : entityList) {
+            System.out.println(entity.toString());
+        }
     }
 }

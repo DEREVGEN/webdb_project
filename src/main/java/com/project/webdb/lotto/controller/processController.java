@@ -1,7 +1,6 @@
 package com.project.webdb.lotto.controller;
 
 import com.project.webdb.lotto.domain.lottoEntity;
-import com.project.webdb.lotto.domain.lottoRepository;
 import com.project.webdb.lotto.service.lottoFindingService;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -16,17 +15,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 @Controller
-public class lottoController {
+public class processController {
 
     @Autowired
-    lottoRepository repo;
+    lottoFindingService findingService;
 
-    @Autowired
-    lottoFindingService service;
-
-    @GetMapping("/")
-    public String main_page() {
-        return "mainPage";
+    //data parsing - only [admin]
+    @GetMapping("/parsingData")
+    public String parsing_data() {
+        return "nope";
     }
 
     // ajax request
@@ -42,26 +39,10 @@ public class lottoController {
         double lat = Double.parseDouble(jo.get("lat").toString());
         double lon = Double.parseDouble(jo.get("lon").toString());
 
-        List<lottoEntity> lottoEntityList = service.find(lat, lon);
+        List<lottoEntity> lottoEntityList = findingService.find(lat, lon);
 
         m.addAttribute("lottoData", lottoEntityList);
 
         return "mainPage :: #thymeTable";
-    }
-
-    //test code below
-    @GetMapping("/btnTable")
-    public String btn_table(Model m) {
-
-        return "buttonPage";
-    }
-
-    @PostMapping("/btnTable")
-    public String get_lotto_table(Model m) {
-        List<lottoEntity> entityList = repo.findAll();
-
-        m.addAttribute("lottoData", entityList);
-
-        return "buttonPage :: #thymeTable";
     }
 }
