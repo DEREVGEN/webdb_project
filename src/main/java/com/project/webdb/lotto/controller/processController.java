@@ -1,7 +1,8 @@
 package com.project.webdb.lotto.controller;
 
-import com.project.webdb.lotto.domain.lottoEntity;
+import com.project.webdb.lotto.domain.LottoStoreEntity;
 import com.project.webdb.lotto.service.lottoFindingService;
+import com.project.webdb.lotto.service.lottoParsingService;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -11,19 +12,25 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
 public class processController {
 
     @Autowired
+    lottoParsingService parsingService;
+    @Autowired
     lottoFindingService findingService;
 
     //data parsing - only [admin]
     @GetMapping("/parsingData")
-    public String parsing_data() {
-        return "nope";
+    @ResponseBody
+    public String parsing_data() throws IOException, ParseException {
+        parsingService.update();
+        return "done";
     }
 
     // ajax request
@@ -39,10 +46,9 @@ public class processController {
         double lat = Double.parseDouble(jo.get("lat").toString());
         double lon = Double.parseDouble(jo.get("lon").toString());
 
-        List<lottoEntity> lottoEntityList = findingService.find(lat, lon);
+        List<LottoStoreEntity> nearStores = findingService.find(lat, lon);
+        m.addAttribute("lottoData", nearStores);
 
-        m.addAttribute("lottoData", lottoEntityList);
-
-        return "mainPage :: #thymeTable";
+        return "findStorePage :: #thymeTable";
     }
 }

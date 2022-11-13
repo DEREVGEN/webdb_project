@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
@@ -37,5 +39,15 @@ class LottoStoreRepositoryTest {
                 .auto(false)
                 .lottoDataEntity(lottoData)
                 .build());
+    }
+
+    @Test
+    @DisplayName("findById 테스트")
+    void repo_test2() {
+        Optional<LottoStoreEntity> lottoStore = storeRepository.findById(2L);
+
+        if (lottoStore.isPresent()) {
+            System.out.println(lottoStore.get().toString());
+        }
     }
 }

@@ -1,6 +1,5 @@
 package com.project.webdb.lotto.dto;
 
-import com.project.webdb.lotto.domain.lottoEntity;
 import lombok.*;
 
 @AllArgsConstructor
@@ -8,7 +7,7 @@ import lombok.*;
 public class lottoQueueDto implements Comparable<lottoQueueDto>{
 
     double key;
-    String nickname;
+    Long storeId;
 
     @Override
     public int compareTo(lottoQueueDto target) {

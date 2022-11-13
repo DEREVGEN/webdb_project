@@ -1,7 +1,5 @@
 package com.project.webdb.lotto.service;
 
-import com.project.webdb.lotto.domain.lottoEntity;
-import com.project.webdb.lotto.domain.lottoRepository;
 import org.json.simple.parser.ParseException;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -27,8 +25,6 @@ class lottoDataEntityParsingServiceTest {
 
     @Autowired
     lottoParsingService lottoService;
-    @Autowired
-    lottoRepository lottoRepo;
 
     @Test
     void service_test() throws IOException, ParseException {
@@ -60,16 +56,6 @@ class lottoDataEntityParsingServiceTest {
             Map<String, Double> geoData = lottoService.where(lotto_address);
 
             System.out.println("name: " + lotto_name + " auto?: " + auto +" address: " + lotto_address + " geo: " + geoData);
-        }
-    }
-
-    @Test
-    @DisplayName("서비스 기능 테스트")
-    void service_test2() throws IOException, ParseException {
-        List<lottoEntity> lottoEntites = lottoService.update();
-
-        for (lottoEntity lottoEn : lottoEntites) {
-            lottoRepo.save(lottoEn);
         }
     }
 
