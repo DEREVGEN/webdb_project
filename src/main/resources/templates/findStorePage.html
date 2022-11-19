@@ -4,50 +4,94 @@
       layout:decorate="~{layouts/layout1}">
 
 ` <th:block layout:fragment="script">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script type="text/javascript">
-      $(function() {
+  <!-- 네이버 MAP API -->
+  <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=gfhujg76t4"></script>
+
+  <!-- ajax 라이브러리 -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script type="text/javascript">
+
+        //위치정보 조회 및 ajax 비동기처리
+        var user_lat = 0, user_lon = 0
+        var map = null;
+
+        function initMap() {
+              var mapOptions = {
+                center: new naver.maps.LatLng(user_lat, user_lon),
+                zoom: 8
+              }
+
+             map = new naver.maps.Map('map', mapOptions)
+
+        }
+
+        $(function() {
         $("#locationBtn").click(function(event) {
-          console.log(`버튼 눌려졌고~ lat값: ${lat} lon값: ${lon}`)
-          var inputData = {"lat": lat, "lon": lon}
-          $.ajax({
-            url: "/getLocation",
-            type: "post",
-            headers: {'Content-Type': 'application/json'},
-            data: JSON.stringify(inputData),
-            success: function(result) {
-              $('#thymeTable').replaceWith(result)
-            },
-            error: function(result, status, error) {
-              console.log('result'+result)
-              console.log('error'+error)
-              console.log('status'+status)
+
+            function success({ coords, timestamp }) {
+            user_lat = coords.latitude
+            user_lon = coords.longitude
+            initMap()
+
+            console.log(`버튼 눌려졌고~ lat값: ${user_lat} lon값: ${user_lon}`)
+            var inputData = {"lat": user_lat, "lon": user_lon}
+            //ajax 처리
+            $.ajax({
+                url: "/getLocation",
+                type: "post",
+                headers: {'Content-Type': 'application/json'},
+                data: JSON.stringify(inputData),
+                success: function(result) {
+                $('#thymeTable').replaceWith(result)
+                },
+                error: function(result, status, error) {
+                console.log('result'+result)
+                console.log('error'+error)
+                console.log('status'+status)
+                }
+            })
+
+        }
+        function error(error) {
+            //alert(`에러코드: ${error.code}, 메시지: ${error.message} `)
+            alert(`위치 정보를 허용해주세요!`)
+        }
+        function getUserLocation() {
+            if (!navigator.geolocation) {
+              throw "위치 정보가 지원되지 않습니다.";
             }
-          })
+            navigator.geolocation.getCurrentPosition(success, error)
+        }
+        getUserLocation();
         })
       })
-      var lat = 0, lon = 0
 
-      function success({ coords, timestamp }) {
-        lat = coords.latitude
-        lon = coords.longitude
-      }
-      function error(error) {
-        alert(`에러코드: ${error.code}, 메시지: ${error.message} `)
-      }
-      function getUserLocation() {
-        if (!navigator.geolocation) {
-          throw "위치 정보가 지원되지 않습니다.";
-        }
-        navigator.geolocation.getCurrentPosition(success, error)
-      }
-      getUserLocation();
+
     </script>
-  </th:block>
+</th:block>
 
-  <div layout:fragment="content">
-    <button id="locationBtn">조회하기</button>
+<div layout:fragment="content">
+  <button id="locationBtn">조회하기</button>
 
+
+  <div id="map" style="width:100%;height:400px;"></div>
+  <div id="lottoStore_fragment">
+    <script th:inline="javascript">
+    /*<![CDATA[*/
+      var storeData = [[${storeData}]];
+
+      if (storeData != null) {
+        for (var i = 0; i < storeData.length; i++) {
+          console.log(i + " : " + storeData[i].nickname + " lat: " + storeData[i].lat + " lon: " + storeData[i].lon)
+          var marker = new naver.maps.Marker({
+                    map: map,
+                    title: storeData[i].nickname,
+                    position: new naver.maps.LatLng(storeData[i].lat, storeData[i].lon)
+             })
+        }
+      }
+    /*]]>*/
+    </script>
     <table id="thymeTable" class="table table-condensed">
       <thead>
       <th>이름</th>
@@ -55,13 +99,15 @@
       <th>주소</th>
       </thead>
       <tbody>
-      <tr th:each="data : ${lottoData}">
+      <tr th:each="data : ${storeData}">
         <td th:text="${data.nickname}"></td>
-        <td th:text="${data.auto}"></td>
+        <td th:if="${data.auto == true}">자동</td>
+        <td th:if="${data.auto == false}">수동</td>
         <td th:text="${data.location}"></td>
       </tr>
       </tbody>
     </table>
   </div>
+</div>
 
 </html>

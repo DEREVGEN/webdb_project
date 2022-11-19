@@ -9,14 +9,17 @@
 
     <table class="table table-condensed">
         <thead>
+        <th>회차</th>
         <th>이름</th>
         <th>방식</th>
         <th>주소</th>
         </thead>
         <tbody>
-        <tr th:each="data : ${lottoData}">
+        <tr th:each="data : ${storeData}">
+            <td th:text="${data.lottoDataEntity.id}"></td>
             <td th:text="${data.nickname}"></td>
-            <td th:text="${data.auto}"></td>
+            <td th:if="${data.auto == true}">자동</td>
+            <td th:if="${data.auto == false}">수동</td>
             <td th:text="${data.location}"></td>
         </tr>
         </tbody>

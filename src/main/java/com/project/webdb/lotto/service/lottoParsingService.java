@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.*;
 
@@ -46,6 +47,7 @@ public class lottoParsingService {
     @Autowired
     LottoGeoRepository lottoGeoRepo;
 
+    @Transactional
     public void update() throws IOException, ParseException { //로또 사이트 파싱
 
 
@@ -163,20 +165,25 @@ public class lottoParsingService {
     }
 
     Map<String, Double> parsing_location(String locationData) throws ParseException { // 위치 api의 json 값에 대한 위도, 경도 파싱
+        Map<String, Double> gpsData = new HashMap<>();
+
         JSONParser jp = new JSONParser();
         JSONObject jo = (JSONObject) jp.parse(locationData);
 
-        JSONArray ja = (JSONArray) jo.get("addresses");
+        try {
+            JSONArray ja = (JSONArray) jo.get("addresses");
+            JSONObject gps = (JSONObject) ja.get(0);
 
-        JSONObject gps = (JSONObject)ja.get(0);
+            String x = gps.get("x").toString();
+            String y = gps.get("y").toString();
 
-        Map<String, Double> gpsData = new HashMap<>();
-
-        String x = gps.get("x").toString();
-        String y = gps.get("y").toString();
-
-        gpsData.put("lon", Double.parseDouble(x));
-        gpsData.put("lat", Double.parseDouble(y));
+            gpsData.put("lon", Double.parseDouble(x));
+            gpsData.put("lat", Double.parseDouble(y));
+        } catch (Exception e) {
+            //위치 정보가 파싱되지 않는 경우에..
+            gpsData.put("lon", 0.0);
+            gpsData.put("lat", 0.0);
+        }
 
         return gpsData;
     }

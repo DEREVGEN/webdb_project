@@ -12,10 +12,10 @@
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
           <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             <li class="nav-item">
-              <a class="nav-link" href="/admin/item/new">로또 당첨</a>
+              <a class="nav-link" href="/">로또 당첨</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/orders">인근 로또 가게 찾기</a>
+              <a class="nav-link" href="/findStore">인근 로또 가게 찾기</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/members/login">로그인</a>
@@ -24,11 +24,6 @@
               <a class="nav-link" href="/members/logout">로그아웃</a>
             </li>
           </ul>
-          <form class="form-inline my-2 my-lg-0" th:action="@{/}" method="get">
-            <input name="searchQuery" class="form-control mr-sm-2" type="search" placeholder="Search"
-                   aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-          </form>
         </div>
       </div>
     </nav>

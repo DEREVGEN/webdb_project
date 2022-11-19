@@ -1,6 +1,9 @@
 package com.project.webdb.lotto.controller;
 
+import com.project.webdb.lotto.domain.LottoDataEntity;
+import com.project.webdb.lotto.domain.LottoGeoEntity;
 import com.project.webdb.lotto.domain.LottoStoreEntity;
+import com.project.webdb.lotto.dto.StoreGeoDto;
 import com.project.webdb.lotto.service.lottoFindingService;
 import com.project.webdb.lotto.service.lottoParsingService;
 import org.json.simple.JSONObject;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -46,9 +50,9 @@ public class processController {
         double lat = Double.parseDouble(jo.get("lat").toString());
         double lon = Double.parseDouble(jo.get("lon").toString());
 
-        List<LottoStoreEntity> nearStores = findingService.find(lat, lon);
-        m.addAttribute("lottoData", nearStores);
+        List<StoreGeoDto> nearStores = findingService.findNearStores(lat, lon);
+        m.addAttribute("storeData", nearStores);
 
-        return "findStorePage :: #thymeTable";
+        return "findStorePage :: #lottoStore_fragment";
     }
 }
