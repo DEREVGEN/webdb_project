@@ -3,6 +3,7 @@ package com.project.webdb.lotto.controller;
 import com.project.webdb.lotto.domain.LottoDataEntity;
 import com.project.webdb.lotto.domain.LottoGeoEntity;
 import com.project.webdb.lotto.domain.LottoStoreEntity;
+import com.project.webdb.lotto.domain.LottoStoreRepository;
 import com.project.webdb.lotto.dto.StoreGeoDto;
 import com.project.webdb.lotto.service.lottoFindingService;
 import com.project.webdb.lotto.service.lottoParsingService;
@@ -12,10 +13,7 @@ import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,6 +26,9 @@ public class processController {
     lottoParsingService parsingService;
     @Autowired
     lottoFindingService findingService;
+
+    @Autowired
+    LottoStoreRepository storeRepo;
 
     //data parsing - only [admin]
     @GetMapping("/parsingData")
@@ -54,5 +55,22 @@ public class processController {
         m.addAttribute("storeData", nearStores);
 
         return "findStorePage :: #lottoStore_fragment";
+    }
+
+    @PostMapping("/getRound")
+    public String main_page_on_round(@RequestBody String round, Model m) throws ParseException {
+        System.out.println(round);
+
+        JSONParser jp = new JSONParser();
+        JSONObject jo = (JSONObject) jp.parse(round);
+
+        int round_num = Integer.parseInt(jo.get("round").toString());
+
+
+        List<LottoStoreEntity> lottoStoreEntities = storeRepo.findByRound(round_num);
+
+        m.addAttribute("storeData", lottoStoreEntities);
+
+        return "mainPage :: #roundTable";
     }
 }

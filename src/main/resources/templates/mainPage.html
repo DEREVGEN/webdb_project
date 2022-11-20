@@ -3,11 +3,44 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout1}">
 
+<th:block layout:fragment="script">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $("#roundBtn").click(function (event) {
+                var selectRound = document.getElementById("roundList")
+                console.log("버튼 누름 해당 버튼: " + selectRound.options[selectRound.selectedIndex].value)
+                var inputData = {"round": selectRound.options[selectRound.selectedIndex].value}
+
+                $.ajax({
+                    url: "/getRound",
+                    type: "post",
+                    headers: {'Content-Type': 'application/json'},
+                    data: JSON.stringify(inputData),
+                    dataType: "html",
+                    success: function(result) {
+                        $('#roundTable').replaceWith(result)
+                    },
+                    error: function(result, status, error) {
+                        console.log('result'+result)
+                        console.log('error'+error)
+                        console.log('status'+status)
+                    }
+                })
+            })
+        })
+    </script>
+</th:block>
+
+
 <div layout:fragment="content">
 
     <h2>로또 당첨 가게 리스트</h2>
-
-    <table class="table table-condensed">
+    <select name="round" id="roundList">
+        <option th:each="data : ${roundData}" th:value="${data.id}"><span th:text="${data.id}"></span></option>
+    </select>
+    <input type="button" value="조회하기" id="roundBtn">
+    <table class="table table-condensed" id="roundTable">
         <thead>
         <th>회차</th>
         <th>이름</th>

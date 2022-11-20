@@ -115,6 +115,8 @@ public class lottoParsingService {
             String auto = element.select("td").get(2).text();
             String lotto_address = element.select("td").get(3).text();
 
+
+
             storeEntities.add(LottoStoreEntity.builder()
                     .nickname(lotto_name)
                     .location(lotto_address)

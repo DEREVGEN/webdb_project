@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -48,6 +49,19 @@ class LottoStoreRepositoryTest {
 
         if (lottoStore.isPresent()) {
             System.out.println(lottoStore.get().toString());
+        }
+    }
+
+    @Test
+    @DisplayName("findByRound 테스트")
+    void repo_test3() {
+        List<LottoStoreEntity> lottoStoreEntities = storeRepository.findByRound(1041);
+
+        if (lottoStoreEntities.size() == 0) {
+            System.err.println("에러");
+        } else {
+            for (LottoStoreEntity lottoStoreEntity : lottoStoreEntities)
+                System.out.println(lottoStoreEntity.toString());
         }
     }
 }
