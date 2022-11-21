@@ -9,6 +9,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,5 +29,12 @@ class MemberRepositoryTest {
                  .nickname("ydg")
                  .createdTime(LocalDateTime.now())
                  .build());
+    }
+
+    @Test
+    @DisplayName("member 레포지터리 기능 테스트")
+    public void repo_test2() throws Exception {
+        memberRepo.findByEmail("ydg983@naver.com").orElseThrow(() -> new Exception("not good"));
+        memberRepo.findByNickname("ydg").orElseThrow(() -> new Exception("not good"));
     }
 }

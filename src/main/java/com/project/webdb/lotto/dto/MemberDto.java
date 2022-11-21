@@ -6,7 +6,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MemberDto {
+
+
     String email;
-    String name;
+
+    @NotBlank(message = "이름은 필수 입력 값입니다.")
+    String nickname;
     String pwd;
 }
