@@ -1,5 +1,6 @@
 package com.project.webdb.lotto.controller;
 
+import com.project.webdb.lotto.domain.LottoDataRepository;
 import com.project.webdb.lotto.domain.LottoStoreEntity;
 import com.project.webdb.lotto.domain.LottoStoreRepository;
 import lombok.Getter;
@@ -16,11 +17,14 @@ public class webController {
     @Autowired
     LottoStoreRepository storeRepo;
 
+    @Autowired
+    LottoDataRepository dataRepo;
+
+
     @GetMapping("/")
     public String main_page(Model m) {
-        List<LottoStoreEntity> storeEntities = storeRepo.findAll();
-
-        m.addAttribute("storeData", storeEntities);
+        //m.addAttribute("storeData", storeRepo.findAll());
+        m.addAttribute("roundData", dataRepo.findAll());
 
         return "mainPage";
     }
@@ -28,5 +32,15 @@ public class webController {
     @GetMapping("/findStore")
     public String find_page() {
         return "findStorePage";
+    }
+
+    @GetMapping("/signIn")
+    public String sign_in_page() {
+        return "/sign/signInPage";
+    }
+
+    @GetMapping("/signUp")
+    public String sign_up_page() {
+        return "/sign/signUpPage";
     }
 }
