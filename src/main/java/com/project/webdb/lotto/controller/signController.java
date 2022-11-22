@@ -24,13 +24,13 @@ public class signController {
         model.addAttribute("memberFormDto", member);
 
         if (bindingResult.hasErrors()) {
-            return "/sign/signUpPage";
+            return "sign/signUpPage";
         }
 
         try {
             memberService.regist(member);
         } catch(Exception e) {
-            return "/sign/signUpPage";
+            return "sign/signUpPage";
         }
 
         return "mainPage";

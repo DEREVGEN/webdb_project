@@ -37,13 +37,13 @@ public class webController {
 
     @GetMapping("/signIn")
     public String sign_in_page() {
-        return "/sign/signInPage";
+        return "sign/signInPage";
     }
 
     @GetMapping("/signUp")
     public String sign_up_page(Model model) {
         model.addAttribute("memberFormDto", new MemberDto());
 
-        return "/sign/signUpPage";
+        return "sign/signUpPage";
     }
 }
