@@ -3,6 +3,7 @@ package com.project.webdb.lotto.controller;
 import com.project.webdb.lotto.domain.LottoDataRepository;
 import com.project.webdb.lotto.domain.LottoStoreEntity;
 import com.project.webdb.lotto.domain.LottoStoreRepository;
+import com.project.webdb.lotto.dto.MemberDto;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,7 +41,9 @@ public class webController {
     }
 
     @GetMapping("/signUp")
-    public String sign_up_page() {
+    public String sign_up_page(Model model) {
+        model.addAttribute("memberFormDto", new MemberDto());
+
         return "/sign/signUpPage";
     }
 }

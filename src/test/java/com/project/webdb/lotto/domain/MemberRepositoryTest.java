@@ -1,5 +1,6 @@
 package com.project.webdb.lotto.domain;
 
+import com.project.webdb.lotto.constant.Role;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,7 +35,19 @@ class MemberRepositoryTest {
     @Test
     @DisplayName("member 레포지터리 기능 테스트")
     public void repo_test2() throws Exception {
-        memberRepo.findByEmail("ydg983@naver.com").orElseThrow(() -> new Exception("not good"));
-        memberRepo.findByNickname("ydg").orElseThrow(() -> new Exception("not good"));
+        memberRepo.findByEmail("example2@naver.com").orElseThrow(() -> new Exception("not good"));
     }
+
+    @Test
+    @DisplayName("스프링부트 시큐리티 로그인 테스트")
+    public void repo_test3() {
+        memberRepo.save(MemberEntity.builder()
+                .email("example3@naver.com")
+                .nickname("ydg")
+                .role(Role.ROLE_USER)
+                .createdTime(LocalDateTime.now())
+                .build());
+    }
+
+
 }
