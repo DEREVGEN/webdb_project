@@ -22,15 +22,19 @@ public class MemberEntity {
     Long id;
 
     @Column
+    @NotNull
     String email;
 
     @Column
+    @NotNull
     String nickname;
 
     @Column
+    @NotNull
     String pwd;
 
     @Column
+    @NotNull
     LocalDateTime createdTime;
 
     @NotNull

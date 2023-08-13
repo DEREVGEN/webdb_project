@@ -33,6 +33,5 @@ build/
 .vscode/
 
 .idea
-.mvn
 src/main/resources/application-secure.properties
 src/main/resources/application-test.properties
