@@ -26,7 +26,6 @@ public class webController {
     public String main_page(Model m) {
         //m.addAttribute("storeData", storeRepo.findAll());
         m.addAttribute("roundData", dataRepo.findAll());
-
         return "mainPage";
     }
 
